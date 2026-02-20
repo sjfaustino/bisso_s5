@@ -17,7 +17,7 @@ NAME:    CALC1
 L    FW 34               // LOAD FROM FLAG WORD FW34 (Potentiometer raw reading?)
 SRW  4                   // SHIFT RIGHT WORD BY 4 BITS (divide by 16)
 L    DW 25               // LOAD FROM DATA WORD DW25 FB10RO (Speed step?)
-+F                       // ADD FLOATING POINT (accumulate)
++F                       // ADD FIXED-POINT 16-BIT INTEGER (ACCU1 = ACCU2 + ACCU1)
 T    FW 40               // TRANSFER TO FLAG WORD FW40 (Temp result)
 JU   FB 243              // JUMP TO FUNCTION BLOCK FB243 (DIV:16 – 16-bit division)
 NAME:    DIV:16  
@@ -35,11 +35,11 @@ SRW  8                   // SHIFT RIGHT WORD BY 8 BITS (divide by 256)
 T    FW 18               // TRANSFER TO FW18 (High byte?)
 L    FW 16               // LOAD FROM FW16 (Quotient)
 L    FW 18               // LOAD FROM FW18
--F                       // SUBTRACT FLOATING POINT
+-F                       // SUBTRACT FIXED-POINT 16-BIT INTEGER (ACCU1 = ACCU2 - ACCU1)
 T    FW 20               // TRANSFER TO FW20 (Adjusted value)
 L    FW 20               // LOAD FROM FW20
 L    DW 22               // LOAD FROM DW22 FB10RO (Upper threshold?)
-<=F                      // COMPARE LESS THAN OR EQUAL FLOATING POINT
+<=F                      // COMPARE LESS THAN OR EQUAL FIXED-POINT 16-BIT INTEGER
 =    F 9.2               // TURN ON F9.2 (Below threshold flag)
 
 A    F 9.0               // IF F9.0 (Division error) IS ON

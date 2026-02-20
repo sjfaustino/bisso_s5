@@ -15,7 +15,7 @@ NAME:    CALC2
 L    FW 34               // LOAD FROM FW34 (Pot value)
 SRW  5                   // SHIFT RIGHT WORD BY 5 BITS (divide by 32)
 L    DW 26               // LOAD FROM DW26 FB11RO (Offset?)
-+F                       // ADD FLOATING POINT
++F                       // ADD FIXED-POINT 16-BIT INTEGER (ACCU1 = ACCU2 + ACCU1)
 T    FW 42               // TRANSFER TO FW42 (Temp)
 JU   FB 243              // JUMP TO FB243 (DIV:16)
 NAME:    DIV:16  
@@ -30,12 +30,12 @@ Z4  :    FW 36           // REMAINDER: FW36
 
 L    FW 30               // LOAD FROM FW30
 L    DW 33               // LOAD FROM DW33 FB11RO (Lower bound?)
-<=F                      // COMPARE LESS THAN OR EQUAL FLOATING POINT
+<=F                      // COMPARE LESS THAN OR EQUAL FIXED-POINT 16-BIT INTEGER
 =    F 8.5               // TURN ON F8.5 (Below min flag)
 
 L    FW 30               // LOAD FROM FW30
 L    DW 37               // LOAD FROM DW37 FB14-15RO (Upper bound?)
->=F                      // COMPARE GREATER THAN OR EQUAL FLOATING POINT
+>=F                      // COMPARE GREATER THAN OR EQUAL FIXED-POINT 16-BIT INTEGER
 =    F 8.6               // TURN ON F8.6 (Above max flag)
 
 O    F 8.6               // OR IF F8.6 IS ON

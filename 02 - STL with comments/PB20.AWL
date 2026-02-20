@@ -21,20 +21,23 @@ A    I 5.2               // AND I5.2 (Limit switch forward) IS ON
 L    FW 24               // LOAD FROM FW24 (Ramp time forward)
 SP   T 12                // START PULSE TIMER T12 (Ramp timer forward)
 
+// F4.0 = (I72.5 AND F0.7 AND NOT I5.2 AND I72.0 AND NOT F5.4)
+//        OR
+//        (NOT I73.0 AND NOT I3.7 AND F0.7 AND T12 AND I5.2 AND F4.0 AND NOT F5.4)
 A    I 72.5              // IF Elbo Fast IS ON
-A    F 0.7               // AND F0.7 (Fast mode?) IS ON
-AN   I 5.2               // AND I5.2 IS OFF
-A    I 72.0              // OR IF Elbo Medium IS ON
-AN   F 5.4               // AND F5.4 (Error?) IS OFF
-O                        // OR
-AN   I 73.0              // IF I73.0 (Emergency?) IS OFF
+A    F 0.7               // AND F0.7 IS ON
+AN   I 5.2               // AND I5.2 IS OFF (not at forward limit)
+A    I 72.0              // AND Elbo Medium IS ON
+AN   F 5.4               // AND F5.4 (General fault) IS OFF
+O                        // --- OR-BEFORE: starts new AND chain, OR'd with above ---
+AN   I 73.0              // AND I73.0 (CNC consensus) IS OFF
 AN   I 3.7               // AND I3.7 (Fast cmd) IS OFF
 A    F 0.7               // AND F0.7 IS ON
-A    T 12                // AND T12 IS RUNNING
-A    I 5.2               // AND I5.2 IS ON
-A    F 4.0               // AND F4.0 IS ON
+A    T 12                // AND T12 (Ramp timer) IS RUNNING
+A    I 5.2               // AND I5.2 IS ON (at forward limit)
+A    F 4.0               // AND F4.0 (already moving forward) IS ON
 AN   F 5.4               // AND F5.4 IS OFF
-=    F 4.0               // TURN ON F4.0 (Forward direction)
+=    F 4.0               // = F4.0 (Forward direction active)
 
 //===============================================================
 // NETWORK 2 : Reverse Movement Control (I5.3)
@@ -45,20 +48,23 @@ A    F 4.1               // AND F4.1 (Reverse active) IS ON
 L    FW 22               // LOAD FROM FW22 (Ramp time reverse)
 SP   T 16                // START PULSE TIMER T16 (Ramp timer reverse)
 
-AN   F 5.4               // IF F5.4 IS OFF
+// F4.1 = (NOT F5.4 AND I72.6 AND NOT I5.3 AND I72.0 AND F0.7)
+//        OR
+//        (NOT I73.0 AND NOT I3.7 AND F0.7 AND T16 AND I5.3 AND F4.1 AND NOT F5.4)
+AN   F 5.4               // IF F5.4 (General fault) IS OFF
 A    I 72.6              // AND Elbo Slow IS ON
-AN   I 5.3               // AND I5.3 IS OFF
-A    I 72.0              // OR Elbo Medium IS ON
+AN   I 5.3               // AND I5.3 IS OFF (not at reverse limit)
+A    I 72.0              // AND Elbo Medium IS ON
 A    F 0.7               // AND F0.7 IS ON
-O                        // OR
-AN   I 73.0              // IF I73.0 IS OFF
+O                        // --- OR-BEFORE: starts new AND chain, OR'd with above ---
+AN   I 73.0              // AND I73.0 (CNC consensus) IS OFF
 AN   I 3.7               // AND I3.7 IS OFF
 A    F 0.7               // AND F0.7 IS ON
-A    T 16                // AND T16 IS RUNNING
-A    I 5.3               // AND I5.3 IS ON
-A    F 4.1               // AND F4.1 IS ON
+A    T 16                // AND T16 (Ramp timer) IS RUNNING
+A    I 5.3               // AND I5.3 IS ON (at reverse limit)
+A    F 4.1               // AND F4.1 (already moving reverse) IS ON
 AN   F 5.4               // AND F5.4 IS OFF
-=    F 4.1               // TURN ON F4.1 (Reverse direction)
+=    F 4.1               // = F4.1 (Reverse direction active)
 
 //===============================================================
 // NETWORK 3 : Speed Selection & Fast Mode
@@ -97,20 +103,23 @@ R    F 3.3               // TURN OFF F3.3
 //===============================================================
 // NETWORK 4 : Safety & Emergency Stop Logic
 //===============================================================
+// F4.5 = (NOT F0.4 AND I72.0 AND T7 AND NOT F5.4 AND I72.7)
+//        OR
+//        (NOT F0.4 AND (F4.0 OR F4.1) AND NOT F5.4 AND F4.5)
 AN   F 0.4               // IF Spianatura IS OFF
 A    I 72.0              // AND Elbo Medium IS ON
 A    T 7                 // AND T7 (Delay timer) IS RUNNING
 AN   F 5.4               // AND F5.4 IS OFF
-A    I 72.7              // OR IF I72.7 (Emergency?) IS ON
-O                        // OR
-AN   F 0.4               // IF Spianatura IS OFF
+A    I 72.7              // AND I72.7 (Elbo Emergency) IS ON
+O                        // --- OR-BEFORE: starts new AND chain, OR'd with above ---
+AN   F 0.4               // AND Spianatura IS OFF
 A(                       
 O    F 4.0               // OR F4.0 IS ON
 O    F 4.1               // OR F4.1 IS ON
 )                        
 AN   F 5.4               // AND F5.4 IS OFF
-A    F 4.5               // AND F4.5 (Stop flag?) IS ON
-=    F 4.5               // TURN ON F4.5 (Stop command)
+A    F 4.5               // AND F4.5 (self-latch) IS ON
+=    F 4.5               // = F4.5 (Movement enable flag)
 
 //===============================================================
 // NETWORK 5 : End of Movement Detection

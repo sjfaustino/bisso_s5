@@ -154,7 +154,7 @@ AN   F 7.5               // AND F7.5 IS OFF
 AN   F 7.1               // IF F7.1 IS OFF
 JC   =M001               // JUMP CONDITIONAL TO M001
 
-L    DW 41               // LOAD FROM DW41 FB14-15RO
+L    DW 39               // LOAD FROM DW39 (Left/Right axis scale factor)
 T    FW 38               // TRANSFER TO FW38 (Scale)
 AN   F 8.0               // IF F8.0 IS OFF
 JC   =M002               // JUMP CONDITIONAL TO M002
@@ -189,12 +189,12 @@ BEC                      // BLOCK END CONDITIONAL
 M003: AN   F 8.2           // IF F8.2 IS OFF
 JC   =M001               // JUMP CONDITIONAL TO M001
 
-L    DW 5                // LOAD FROM DW5??? 
+L    DW 11               // LOAD FROM DW Speed 11 (Data DW11 Velocidade)
 T    FW 34               // TRANSFER TO FW34
 JU   FB 17               // JUMP TO FB17 (RIC(+/-))
 NAME:    RIC(+/-)
 L    FW 34               // LOAD FROM FW34
-T    DW 5                // TRANSFER TO DW5
+T    DW 11               // TRANSFER TO DW11
 JU   FB 16               // JUMP TO FB16 (SCALAR)
 NAME:    SCALAR  
 
@@ -208,6 +208,7 @@ A(
 O    I 3.0               // OR IF Mnp Down (Manipulo Baixar (51)) IS ON
 O    I 3.1               // OR Mnp Up (Manipulo Subir (52)) IS ON
 )                        
+AN   I 4.3               // AND I4.3 (vertical axis safety interlock) IS OFF
 AN   F 7.0               // AND F7.0 IS OFF
 AN   F 7.1               // AND F7.1 IS OFF
 AN   F 7.3               // AND F7.3 IS OFF
@@ -218,8 +219,8 @@ AN   F 7.5               // AND F7.5 IS OFF
 AN   F 7.2               // IF F7.2 IS OFF
 JC   =M001               // JUMP CONDITIONAL TO M001
 
-L    DW 41               // LOAD FROM DW41
-T    FW 38               // TRANSFER TO FW38
+L    DW 40               // LOAD FROM DW40 (Up/Down axis scale factor)
+T    FW 38               // TRANSFER TO FW38 (Scale)
 AN   F 8.0               // IF F8.0 IS OFF
 JC   =M002               // JUMP CONDITIONAL TO M002
 
@@ -250,8 +251,37 @@ NAME:    SCALAR
 A    F 8.1               // IF F8.1 IS ON
 BEC                      // BLOCK END CONDITIONAL
 
-M003: AN   F 8.2           // IF F8.2 IS OFF
-JC   =M001               // JUMP CONDITIONAL TO M001
+M003: AN   F 34.2          // IF F34.2 IS OFF
+JC   =M004               // JUMP CONDITIONAL TO M004
+
+L    DW 5                // LOAD FROM DW Speed 5 (Data DW5 Velocidade)
+T    FW 34               // TRANSFER TO FW34
+JU   FB 17               // JUMP TO FB17 (RIC(+/-))
+NAME:    RIC(+/-)
+L    FW 34               // LOAD FROM FW34
+T    DW 6                // TRANSFER TO DW6
+JU   FB 16               // JUMP TO FB16 (SCALAR)
+NAME:    SCALAR  
+
+A    F 8.0               // IF F8.0 IS ON
+BEC                      // BLOCK END CONDITIONAL
+
+AN   F 8.1               // IF F8.1 IS OFF
+M001: JC   =M005           // JUMP CONDITIONAL TO M005
+
+L    DW 7                // LOAD FROM DW Speed 7 (Data DW7 Velocidade)
+T    FW 34               // TRANSFER TO FW34
+JU   FB 17               // JUMP TO FB17 (RIC(+/-))
+NAME:    RIC(+/-)
+L    FW 34               // LOAD FROM FW34
+T    DW 7                // TRANSFER TO DW7
+JU   FB 16               // JUMP TO FB16 (SCALAR)
+NAME:    SCALAR  
+A    F 8.1               // IF F8.1 IS ON
+BEC                      // BLOCK END CONDITIONAL
+
+M005: AN   F 8.2           // IF F8.2 IS OFF
+JC   =M006               // JUMP CONDITIONAL TO M006
 
 L    DW 8                // LOAD FROM DW Speed 8 (Data DW8 Velocidade)
 T    FW 34               // TRANSFER TO FW34
@@ -262,7 +292,7 @@ T    DW 8                // TRANSFER TO DW8
 JU   FB 16               // JUMP TO FB16 (SCALAR)
 NAME:    SCALAR  
 
-M001: A    F 7.2           // IF F7.2 IS ON
+M006: A    F 7.3           // IF F7.3 IS ON
 BEC                      // BLOCK END CONDITIONAL
 
 //===============================================================

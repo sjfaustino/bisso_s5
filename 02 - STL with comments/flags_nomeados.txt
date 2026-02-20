@@ -22,11 +22,11 @@ F 0.1    ??Mode_Manual_Fwd               ; Manipulo frente (I 2.1)
 F 0.2    ??Mode_Manual_Rev               ; Manipulo trás (I 2.2)
 F 0.3    ??Mode_Manual_Left              ; Manipulo esquerda (I 2.3)
 F 0.4    Spianatura_Active               ; Modo nivelamento automático ativo
-F 0.5    ??Timer_0_5s_Done               ; T13 (0.5s) concluído
-F 0.6    ??No_Error                      ; Sem erro geral (pré-condição para F 1.2)
+F 0.5    ??Toggle_Clock                   ; T13 (0.5s) pulse – clock for F0.6/F1.2 toggle flip-flop
+F 0.6    ??Toggle_State                   ; Flip-flop state latch, toggled by F0.5 clock
 F 0.7    General_Enable                  ; Habilitação geral do sistema
 
-F 1.2    ??Spianatura_Trigger            ; Dispara Spianatura temporariamente (F0.5 + F0.6)
+F 1.2    ??Toggle_Output                  ; Toggle flip-flop output: SET when F0.5=1 AND F0.6=0, RESET when F0.5=1 AND F0.6=1
 F 1.6    ??System_Ready                  ; Pré-condição para ligar contatores (Q6.x)
 
 F 2.0    ??Speed_Plus_Active             ; Botão +Vel (I 4.5) + I 2.7
@@ -52,6 +52,7 @@ F 5.4    ??General_Fault                 ; Falha geral (bloqueia movimento)
 F 6.0    ??Axis_FwdRev_Selected          ; Eixo Avanço/Recuo selecionado
 F 6.1    ??Axis_LeftRight_Selected       ; Eixo Esquerda/Direita selecionado
 F 6.2    ??Axis_RotTable_Selected        ; Rotação da mesa selecionada
+F 6.3    ??Speed_Edit_Mode               ; Speed parameter editing mode (set by 3x I3.7 press within 2s via C1)
 F 6.4    ??Axis_FwdRev_Active            ; Eixo Avanço/Recuo em execução
 F 6.5    ??Axis_UpDown_Active            ; Eixo Vertical em execução
 F 6.6    ??Axis_LeftRight_Active         ; Eixo Translação em execução

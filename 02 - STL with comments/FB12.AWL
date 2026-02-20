@@ -19,7 +19,7 @@ L    DW 27               // LOAD FROM DW27 FB10RO (Min step)
 T    FW 32               // TRANSFER TO FW32 (Current step)
 M001: L    FW 34           // LOAD FROM FW34 (Current value)
 L    DW 28               // LOAD FROM DW28 FB12RO (Max limit?)
-<F                       // COMPARE LESS THAN FLOATING POINT
+<F                       // COMPARE LESS THAN FIXED-POINT 16-BIT INTEGER
 =    F 2.5               // TURN ON F2.5 (Below max flag)
 
 AN   F 2.5               // IF F2.5 IS OFF
@@ -27,10 +27,10 @@ BEC                      // BLOCK END CONDITIONAL
 
 L    FW 34               // LOAD FROM FW34
 L    FW 32               // LOAD FROM FW32 (Step)
-+F                       // ADD FLOATING POINT
++F                       // ADD FIXED-POINT 16-BIT INTEGER (ACCU1 = ACCU2 + ACCU1)
 T    FW 34               // TRANSFER TO FW34
 L    DW 28               // LOAD FROM DW28
-<=F                      // COMPARE LESS THAN OR EQUAL FLOATING POINT
+<=F                      // COMPARE LESS THAN OR EQUAL FIXED-POINT 16-BIT INTEGER
 =    F 4.6               // TURN ON F4.6 (At max flag)
 
 A    F 4.6               // IF F4.6 IS ON

@@ -24,10 +24,10 @@ I 2.0    Cmd_Auto_Mode                    ; Botão Modo Automático
 I 2.1    Mnp_Front                        ; Manipulo Frente (Avanço)
 I 2.2    Mnp_Back                         ; Manipulo Trás (Recuo)
 I 2.3    Mnp_Left                         ; Manipulo Esquerda
-I 2.4    Mnp_Right                        ; Manipulo Direita
-I 2.5    Mnp_Up                           ; Manipulo Subir
-I 2.6    Mnp_Down                         ; Manipulo Descer
-I 2.7    Mnp_Rot_CW                       ; Manipulo Rotação Horário
+I 2.4    Mnp_Transl_Right                 ; Manipulo Translação Direita (46) → used in FB15 Network 3
+I 2.5    Mnp_Transl_Left                  ; Manipulo Translação Esquerda (47) → used in FB15 Network 3
+I 2.6    Mnp_Front                        ; Manipulo Avanço (48) → used in FB15 Network 2
+I 2.7    Mnp_Back                         ; Manipulo Recuo (49) → used in FB15 Network 2
 I 3.0    Mnp_Down                         ; Manipulo Baixar (Vertical)
 I 3.1    Mnp_Up                           ; Manipulo Subir (Vertical)
 I 3.2    Mnp_RotTable_CW                  ; Manipulo Rotação Mesa Horário
@@ -95,8 +95,8 @@ F 0.1    ??Mode_Manual_Fwd                ; Manipulo Frente
 F 0.2    ??Mode_Manual_Rev                ; Manipulo Trás
 F 0.3    ??Mode_Manual_Left               ; Manipulo Esquerda
 F 0.4    Spianatura_Active                ; Nivelamento Automático Ativo
-F 0.5    ??Timer_0_5s_Done                ; T13 concluído
-F 0.6    ??No_Error                       ; Sem erro geral
+F 0.5    ??Toggle_Clock                    ; T13 (0.5s) pulse – clock for F0.6/F1.2 flip-flop
+F 0.6    ??Toggle_State                    ; Flip-flop state latch (toggled by F0.5 clock)
 F 0.7    General_Enable                   ; Habilitação Geral
 
 F 1.2    ??Spianatura_Trigger             ; Dispara Spianatura
@@ -124,6 +124,7 @@ F 5.4    ??General_Fault                  ; Falha Geral
 
 F 6.0    ??Axis_FwdRev_Selected           ; Eixo Avanço/Recuo Selecionado
 F 6.1    ??Axis_LeftRight_Selected        ; Eixo Translação Selecionado
+F 6.3    ??Speed_Edit_Mode                ; Speed parameter editing mode (set by 3x I3.7 press in 2s)
 F 6.4    ??Axis_FwdRev_Active             ; Eixo Avanço/Recuo Ativo
 F 6.5    ??Axis_UpDown_Active             ; Eixo Vertical Ativo
 F 6.6    ??Axis_LeftRight_Active          ; Eixo Translação Ativo
